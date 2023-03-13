@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ADMIN</title>
+    <style>
+        table {
+          font-family: arial, sans-serif;
+          border-collapse: collapse;
+          width: 100%;
+        }
+        
+        td, th {
+          border: 1px solid #dddddd;
+          text-align: left;
+          padding: 8px;
+        }
+        
+        tr:nth-child(even) {
+          background-color: #dddddd;
+        }
+    </style>
+</head>
+<body>
+    <h2>Flora Proxy Manager (By NoNametxt)</h2>
+    <%
+    function formatDate(date, format) {
+        const map = {
+            mm: date.getMonth() + 1,
+            dd: date.getDate(),
+            yyyy: date.getFullYear()
+        }
+    
+        return `${map.dd}.${map.mm}.${map.yyyy}`;
+    }
+    %>
+    <%if(admin == true){%>
+        <h4 style="margin-bottom: 5px;">Logged in as: <%=user.username%></h4>
+        <a href="/logout"><button style="margin-bottom: 30px;">Logout</button></a>
+		<form autocomplete="off" action="/api/licances/create" method="post" autocomplete="off">
+            <input type="text" name="createlicance" id="createlicance" placeholder="LICANCE">
+            <input style="margin-top: 5px;" type="submit" value="Create">
+        </form>
+		<br>
+		<table>
+            <tr>
+              <th>Licances</th>
+              <th>Action</th>
+            </tr>
+            <%for(var i = 0; i < licances.length; i++){%>
+                <tr>
+                    <td><%=licances[i]%></td>
+                    <td>
+                        <form autocomplete="off" style="margin-bottom: 5px;" action="/api/licances/remove" method="post">
+                            <input type="hidden" name="removelicance" value="<%=licances[i]%>">
+                            <input type="submit" value="Remove Licance">
+                        </form>                       
+                        
+                    </td>
+                </tr>
+            <%}%>
+        </table>
+		<br><br><br>
+		  
+        <form autocomplete="off" action="/api/user/create" method="post" autocomplete="off">
+            <input type="text" name="uusername" placeholder="USERNAME">
+            <input type="text" name="upassword" placeholder="PASSWORD">
+            <input type="text" name="uday" placeholder="EXPIRES (DAY)"><br>
+            <input style="margin-top: 5px;" type="submit" value="Create Account">
+        </form>
+        <br>
+        <table>
+            <tr>
+              <th>Username</th>
+              <th>Rank</th>
+              <th>Expires</th>
+              <th>Action</th>
+            </tr>
+            <%for(var i = 0; i < users.length; i++){%>
+                <tr>
+                    <td><%=users[i].username%></td>
+                    <td><%=users[i].rank%></td>
+                    <td><%=formatDate(new Date(users[i].expires))%></td>
+                    <td>
+                        <form autocomplete="off" style="margin-bottom: 5px;" action="/api/user/remove" method="post">
+                            <input type="hidden" name="removeusername" value="<%=users[i].username%>">
+                            <input type="submit" value="Remove Account">
+                        </form>                       
+                        <form autocomplete="off" style="margin-bottom: 5px;" action="/api/user/password" method="post">
+                            <input type="hidden" name="passusername" value="<%=users[i].username%>">
+                            <input type="text" name="newpassword" placeholder="NEW PASSWORD">
+                            <input type="submit" value="Apply">
+                        </form>
+                        <form autocomplete="off" action="/api/user/addtime" method="post">
+                            <input type="hidden" name="newdayusername" value="<%=users[i].username%>">
+                            <input type="text" name="newday" placeholder="NEW EXPIRES (DAY)">
+                            <input type="submit" value="Apply">
+                        </form>
+                    </td>
+                </tr>
+            <%}%>
+          </table>
+	<script>
+		function licanceCreate(length) {
+			var result = '';
+			var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+			var charactersLength = characters.length;
+			for (var i=0; i<length; i++) {
+				result += characters.charAt(Math.floor(Math.random() * charactersLength));
+			}
+			return result;
+		}
+		let lic = licanceCreate(10);
+		document.getElementById("createlicance").value = lic;
+	</script>
+    <%}%>
+
+</body>
+</html>

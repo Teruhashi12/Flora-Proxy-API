@@ -1,0 +1,13 @@
+{
+  "licances": {
+  },
+  "user": {
+    "Admin": {
+      "username": "Admin",
+      "password": "",
+      "rank": "Developer",
+      "expires": 850659933201579,
+      "mac": ""
+    }
+  }
+}
