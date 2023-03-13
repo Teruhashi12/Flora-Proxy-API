@@ -10,6 +10,8 @@ const db = new data();
 
 const md5 = require('md5');
 
+const adminRank = ["Developer", "Access"];
+
 app.use(bodyParser.urlencoded({ parameterLimit: 100000, limit: '50mb', extended: true }));
 app.use(bodyParser.json({ limit: '50mb', type: 'application/json' }));
 
@@ -57,7 +59,6 @@ function getAllLicances() {
 app.get('/admin', adminReq, (req, res) => {
     render(req, res, 'admin.ejs', { admin: req.session.isAdmin, users: getAllUser(), licances: getAllLicances() });
 });
-const adminRank = ["Developer", "Access"];
 
 app.post('/api/licances/create', adminReq, (req, res) => {
     if (req.session.isAdmin == true) {
